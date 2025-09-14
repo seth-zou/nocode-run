@@ -62,13 +62,35 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ 
+        marginBottom: 32, 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        padding: '24px 0',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+      }}>
         <div>
-          <Title level={2} style={{ margin: 0 }}>
-            <AppstoreOutlined style={{ marginRight: 8 }} />
+          <Title level={2} style={{ 
+            margin: 0,
+            background: 'linear-gradient(135deg,#667eea 0%, #764ba2 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            fontWeight: 700
+          }}>
+            <AppstoreOutlined style={{ 
+              marginRight: 12,
+              color: '#667eea',
+              fontSize: '28px'
+            }} />
             我的应用
           </Title>
-          <Paragraph type="secondary" style={{ margin: '8px 0 0 0' }}>
+          <Paragraph type="secondary" style={{ 
+            margin: '12px 0 0 0',
+            fontSize: '16px',
+            color: '#64748b'
+          }}>
             通过自然语言描述创建和管理您的应用
           </Paragraph>
         </div>
@@ -77,16 +99,73 @@ const HomePage: React.FC = () => {
           icon={<PlusOutlined />} 
           size="large"
           onClick={() => setIsModalVisible(true)}
+          style={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            border: 'none',
+            borderRadius: '12px',
+            height: '48px',
+            padding: '0 24px',
+            fontSize: '16px',
+            fontWeight: 600,
+            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)'
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.4)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)'
+            e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)'
+          }}
         >
           创建应用
         </Button>
       </div>
 
       {apps.length === 0 ? (
-        <Empty 
-          description="暂无应用，点击上方按钮创建您的第一个应用"
-          style={{ marginTop: 60 }}
-        />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '400px',
+          background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+          borderRadius: '20px',
+          padding: '60px 40px',
+          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.08)',
+          marginTop: 20
+        }}>
+          <div style={{
+            width: '120px',
+            height: '120px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '24px',
+            boxShadow: '0 8px 25px rgba(102, 126, 234, 0.3)'
+          }}>
+            <AppstoreOutlined style={{ fontSize: '48px', color: 'white' }} />
+          </div>
+          <Title level={3} style={{ 
+            color: '#334155',
+            marginBottom: '12px',
+            textAlign: 'center'
+          }}>
+            开始创建您的第一个应用
+          </Title>
+          <Paragraph style={{ 
+            color: '#64748b',
+            fontSize: '16px',
+            textAlign: 'center',
+            maxWidth: '400px',
+            lineHeight: '1.6'
+          }}>
+            使用自然语言描述您想要的功能，我们将为您生成相应的代码
+          </Paragraph>
+        </div>
       ) : (
         <Row gutter={[16, 16]}>
           {apps.map((app) => (
@@ -130,14 +209,37 @@ const HomePage: React.FC = () => {
       )}
 
       <Modal
-        title="创建新应用"
+        title={
+          <div style={{
+            fontSize: '20px',
+            fontWeight: 600,
+            color: '#334155',
+            padding: '8px 0'
+          }}>
+            创建新应用
+          </div>
+        }
         open={isModalVisible}
         onCancel={() => {
           setIsModalVisible(false)
           form.resetFields()
         }}
         footer={null}
-        width={500}
+        width={520}
+        style={{
+          borderRadius: '16px'
+        }}
+        styles={{
+          content: {
+            borderRadius: '16px',
+            padding: '32px'
+          },
+          header: {
+            borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+            paddingBottom: '16px',
+            marginBottom: '24px'
+          }
+        }}
       >
         <Form
           form={form}
@@ -168,17 +270,36 @@ const HomePage: React.FC = () => {
             />
           </Form.Item>
           
-          <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
+          <Form.Item style={{ marginBottom: 0, textAlign: 'right', marginTop: '32px' }}>
             <Button 
               onClick={() => {
                 setIsModalVisible(false)
                 form.resetFields()
               }}
-              style={{ marginRight: 8 }}
+              style={{ 
+                marginRight: 12,
+                borderRadius: '8px',
+                height: '40px',
+                padding: '0 20px',
+                border: '1px solid #d1d5db',
+                color: '#6b7280'
+              }}
             >
               取消
             </Button>
-            <Button type="primary" htmlType="submit">
+            <Button 
+              type="primary" 
+              htmlType="submit"
+              style={{
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                border: 'none',
+                borderRadius: '8px',
+                height: '40px',
+                padding: '0 20px',
+                fontWeight: 600,
+                boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)'
+              }}
+            >
               创建应用
             </Button>
           </Form.Item>

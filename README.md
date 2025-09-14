@@ -97,14 +97,14 @@ npm run dev
 
 # 或者分别启动
 npm run dev:frontend    # 前端开发服务器 (http://localhost:3000)
-npm run dev:backend     # 后端API服务器 (http://localhost:3001)
+npm run dev:backend     # 后端API服务器 (http://localhost:3003)
 ```
 
 ### 5. 访问应用
 
 - 前端应用: http://localhost:3000
-- 后端API: http://localhost:3001/api
-- 健康检查: http://localhost:3001/api/health
+- 后端API: http://localhost:3003/api
+- 健康检查: http://localhost:3003/api/health
 
 ## 📖 使用指南
 

@@ -85,18 +85,55 @@ const DevelopmentPage: React.FC = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div style={{ 
+        marginBottom: 32, 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: 20,
+        padding: '24px 0',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+      }}>
         <Button 
           icon={<ArrowLeftOutlined />} 
           onClick={handleBack}
+          style={{
+            borderRadius: '12px',
+            height: '44px',
+            padding: '0 20px',
+            border: '1px solid #e2e8f0',
+            background: 'white',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+            transition: 'all 0.3s ease',
+            fontWeight: 500
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-1px)'
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)'
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.06)'
+          }}
         >
           返回首页
         </Button>
         <div>
-          <Title level={3} style={{ margin: 0 }}>
+          <Title level={3} style={{ 
+            margin: 0,
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            fontWeight: 700
+          }}>
             {currentApp?.name || '应用开发'}
           </Title>
-          <Text type="secondary">
+          <Text style={{
+            color: '#64748b',
+            fontSize: '15px',
+            marginTop: '4px',
+            display: 'block'
+          }}>
             {currentApp?.description || '应用开发页面'}
           </Text>
         </div>
@@ -108,11 +145,18 @@ const DevelopmentPage: React.FC = () => {
             <pre style={{ 
               whiteSpace: 'pre-wrap', 
               wordBreak: 'break-word',
-              fontSize: '12px',
-              lineHeight: '1.4',
+              fontSize: '13px',
+              lineHeight: '1.6',
               margin: 0,
-              maxHeight: '400px',
-              overflow: 'auto'
+              maxHeight: '450px',
+              overflow: 'auto',
+              background: 'linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%)',
+              padding: '20px',
+              borderRadius: '12px',
+              border: '1px solid rgba(0, 0, 0, 0.05)',
+              color: '#334155',
+              fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
+              boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.06)'
             }}>
               {codeOutput}
             </pre>
@@ -132,22 +176,97 @@ const DevelopmentPage: React.FC = () => {
               onClick={handleSubmitRequirement}
               loading={isGenerating}
               block
+              style={{
+                background: isGenerating 
+                  ? 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)'
+                  : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                border: 'none',
+                borderRadius: '12px',
+                height: '48px',
+                fontSize: '16px',
+                fontWeight: 600,
+                boxShadow: isGenerating 
+                  ? '0 4px 15px rgba(148, 163, 184, 0.3)'
+                  : '0 4px 15px rgba(102, 126, 234, 0.3)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                if (!isGenerating) {
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.4)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isGenerating) {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)'
+                }
+              }}
             >
               {isGenerating ? '生成中...' : '提交需求'}
             </Button>
           </Card>
         </div>
         
-        <Card className="preview-panel" title="应用预览">
+        <Card 
+          className="preview-panel" 
+          title={
+            <span style={{
+              fontSize: '16px',
+              fontWeight: 600,
+              color: '#334155'
+            }}>
+              应用预览
+            </span>
+          }
+          styles={{
+            header: {
+              borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+              padding: '20px 24px 16px'
+            },
+            body: {
+              padding: '24px',
+              height: 'calc(100% - 60px)'
+            }
+          }}
+        >
           <div style={{ 
             height: '100%', 
             display: 'flex', 
+            flexDirection: 'column',
             alignItems: 'center', 
             justifyContent: 'center',
-            color: '#999',
-            fontSize: '16px'
+            background: 'linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%)',
+            borderRadius: '12px',
+            padding: '40px',
+            border: '2px dashed #cbd5e1',
+            minHeight: '300px'
           }}>
-            应用预览将在这里显示
+            <div style={{
+              width: '80px',
+              height: '80px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '20px',
+              opacity: 0.8
+            }}>
+              <span style={{ fontSize: '32px', color: 'white' }}>📱</span>
+            </div>
+            <div style={{
+              color: '#64748b',
+              fontSize: '16px',
+              textAlign: 'center',
+              lineHeight: '1.6'
+            }}>
+              应用预览将在这里显示
+              <br />
+              <span style={{ fontSize: '14px', opacity: 0.8 }}>
+                提交需求后查看生成的应用效果
+              </span>
+            </div>
           </div>
         </Card>
       </div>
