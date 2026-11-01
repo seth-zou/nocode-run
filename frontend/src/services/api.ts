@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type { App } from '../store/appStore'
+import logger from './logger'
 
 const api = axios.create({
   baseURL: '/api',
@@ -22,7 +23,12 @@ api.interceptors.response.use(
     return response.data
   },
   (error) => {
-    console.error('API Error:', error)
+    logger.error('API request failed', {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      message: error.message,
+    })
     return Promise.reject(error)
   }
 )

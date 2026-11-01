@@ -1,6 +1,7 @@
 const express = require('express')
 const Joi = require('joi')
 const App = require('../models/App')
+const logger = require('../utils/logger')
 
 const router = express.Router()
 
@@ -34,7 +35,7 @@ router.get('/', async (req, res) => {
     const apps = await App.findAll()
     res.json(apps)
   } catch (error) {
-    console.error('Error fetching apps:', error)
+    logger.error('Failed to fetch apps', { error: error.message, stack: error.stack })
     res.status(500).json({ 
       error: '获取应用列表失败',
       message: error.message 
@@ -59,7 +60,7 @@ router.get('/:id', async (req, res) => {
     
     res.json(app)
   } catch (error) {
-    console.error('Error fetching app:', error)
+    logger.error('Failed to fetch app', { id: req.params.id, error: error.message, stack: error.stack })
     res.status(500).json({ 
       error: '获取应用失败',
       message: error.message 
@@ -92,7 +93,7 @@ router.post('/', async (req, res) => {
     
     res.status(201).json(app)
   } catch (error) {
-    console.error('Error creating app:', error)
+    logger.error('Failed to create app', { error: error.message, stack: error.stack })
     res.status(500).json({ 
       error: '创建应用失败',
       message: error.message 
@@ -142,7 +143,7 @@ router.put('/:id', async (req, res) => {
     
     res.json(updatedApp)
   } catch (error) {
-    console.error('Error updating app:', error)
+    logger.error('Failed to update app', { id: req.params.id, error: error.message, stack: error.stack })
     res.status(500).json({ 
       error: '更新应用失败',
       message: error.message 
@@ -173,7 +174,7 @@ router.delete('/:id', async (req, res) => {
       ...result 
     })
   } catch (error) {
-    console.error('Error deleting app:', error)
+    logger.error('Failed to delete app', { id: req.params.id, error: error.message, stack: error.stack })
     res.status(500).json({ 
       error: '删除应用失败',
       message: error.message 
