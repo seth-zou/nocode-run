@@ -1,8 +1,9 @@
 const sqlite3 = require('sqlite3').verbose()
 const path = require('path')
 const fs = require('fs')
+const logger = require('../utils/logger')
 
-const DB_PATH = path.join(__dirname, '../data/nocode.db')
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../data/nocode.db')
 const DATA_DIR = path.dirname(DB_PATH)
 
 // 确保数据目录存在
@@ -17,10 +18,10 @@ function getDatabase() {
   if (!db) {
     db = new sqlite3.Database(DB_PATH, (err) => {
       if (err) {
-        console.error('Error opening database:', err.message)
+        logger.error('Failed to open database', { path: DB_PATH, error: err.message })
         throw err
       }
-      console.log('📦 Connected to SQLite database')
+      logger.info('Connected to SQLite database', { path: DB_PATH })
     })
   }
   return db
@@ -57,18 +58,18 @@ function initDatabase() {
     database.serialize(() => {
       database.run(createAppsTable, (err) => {
         if (err) {
-          console.error('Error creating apps table:', err)
+          logger.error('Failed to create apps table', { error: err.message })
           return reject(err)
         }
-        console.log('✅ Apps table created/verified')
+        logger.info('Apps table created/verified')
       })
       
       database.run(createAppCodeTable, (err) => {
         if (err) {
-          console.error('Error creating app_code table:', err)
+          logger.error('Failed to create app_code table', { error: err.message })
           return reject(err)
         }
-        console.log('✅ App code table created/verified')
+        logger.info('App code table created/verified')
         resolve()
       })
     })
@@ -81,9 +82,9 @@ function closeDatabase() {
     if (db) {
       db.close((err) => {
         if (err) {
-          console.error('Error closing database:', err.message)
+          logger.error('Failed to close database', { error: err.message })
         } else {
-          console.log('📦 Database connection closed')
+          logger.info('Database connection closed')
         }
         resolve()
       })
