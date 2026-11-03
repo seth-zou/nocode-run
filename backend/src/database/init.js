@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose()
 const path = require('path')
 const fs = require('fs')
 
-const DB_PATH = path.join(__dirname, '../data/nocode.db')
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../data/nocode.db')
 const DATA_DIR = path.dirname(DB_PATH)
 
 // 确保数据目录存在
@@ -85,6 +85,7 @@ function closeDatabase() {
         } else {
           console.log('📦 Database connection closed')
         }
+        db = null
         resolve()
       })
     } else {
