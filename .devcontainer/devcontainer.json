@@ -1,0 +1,56 @@
+{
+  "name": "nocode-run",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      // Settings for the TypeScript + ESLint toolchain used by the frontend.
+      "settings": {
+        "typescript.tsdk": "frontend/node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "eslint.workingDirectories": ["frontend"],
+        "eslint.validate": [
+          "javascript",
+          "typescript",
+          "typescriptreact",
+          "javascriptreact"
+        ]
+      },
+      // Extensions that support the project's stack: TypeScript + React
+      // (frontend) and Node.js/Express (backend).
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.js-debug",
+        "yoavbls.pretty-ts-errors"
+      ]
+    }
+  },
+  // Use the same ports the dev servers listen on:
+  //   - frontend Vite dev server -> 3000
+  //   - backend Express API       -> 3003
+  "forwardPorts": [3000, 3003],
+  "portsAttributes": {
+    "3000": { "label": "Frontend (Vite)", "onAutoForward": "openBrowser" },
+    "3003": { "label": "Backend (Express API)" }
+  },
+  // Install all workspace dependencies (root, frontend, backend) so the
+  // container is ready to run `npm run dev` immediately.
+  "postCreateCommand": "npm run install:all",
+  // After dependencies are installed, copy the backend env template so the
+  // server can start without manual setup.
+  "postStartCommand": "test -f backend/.env || cp backend/.env.example backend/.env",
+  "remoteEnv": {
+    "NODE_ENV": "development"
+  },
+  // Connect as the pre-configured non-root user from the base image.
+  "remoteUser": "node"
+}
