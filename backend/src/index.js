@@ -55,28 +55,32 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Not Found' })
 })
 
-// 初始化数据库并启动服务器
-initDatabase()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`🚀 Server is running on port ${PORT}`)
-      console.log(`📱 Frontend: http://localhost:${PORT}`)
-      console.log(`🔧 API: http://localhost:${PORT}/api`)
-      console.log(`💚 Health: http://localhost:${PORT}/api/health`)
+module.exports = { app, initDatabase }
+
+// 初始化数据库并启动服务器 (仅在直接运行时启动，测试中不自动监听端口)
+if (require.main === module) {
+  initDatabase()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`🚀 Server is running on port ${PORT}`)
+        console.log(`📱 Frontend: http://localhost:${PORT}`)
+        console.log(`🔧 API: http://localhost:${PORT}/api`)
+        console.log(`💚 Health: http://localhost:${PORT}/api/health`)
+      })
     })
-  })
-  .catch((error) => {
-    console.error('Failed to initialize database:', error)
-    process.exit(1)
+    .catch((error) => {
+      console.error('Failed to initialize database:', error)
+      process.exit(1)
+    })
+
+  // 优雅关闭
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully')
+    process.exit(0)
   })
 
-// 优雅关闭
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully')
-  process.exit(0)
-})
-
-process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully')
-  process.exit(0)
-})
+  process.on('SIGINT', () => {
+    console.log('SIGINT received, shutting down gracefully')
+    process.exit(0)
+  })
+}

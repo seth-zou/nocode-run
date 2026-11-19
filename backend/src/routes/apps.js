@@ -182,3 +182,5 @@ router.delete('/:id', async (req, res) => {
 })
 
 module.exports = router
+module.exports.createAppSchema = createAppSchema
+module.exports.updateAppSchema = updateAppSchema
