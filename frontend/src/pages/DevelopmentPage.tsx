@@ -4,6 +4,7 @@ import { Button, Input, Card, Typography, message, Spin } from 'antd'
 import { ArrowLeftOutlined, SendOutlined } from '@ant-design/icons'
 import { useAppStore } from '../store/appStore'
 import { appApi } from '../services/api'
+import logger from '../services/logger'
 
 const { TextArea } = Input
 const { Title, Text } = Typography
@@ -25,16 +26,16 @@ const DevelopmentPage: React.FC = () => {
   const loadApp = async (id: string) => {
     try {
       setLoading(true)
-      console.log('Loading app with ID:', id)
+      logger.debug('Loading app', { id })
       const app = await appApi.getApp(id)
-      console.log('App loaded successfully:', app)
+      logger.debug('App loaded', { id, name: app.name })
       setCurrentApp(app)
     } catch (error: any) {
-      console.error('Failed to load app:', error)
-      console.error('Error details:', {
+      logger.error('Failed to load app', {
+        id,
         message: error.message,
         status: error.response?.status,
-        data: error.response?.data
+        data: error.response?.data,
       })
       message.error(`加载应用失败: ${error.response?.data?.error || error.message}`)
       navigate('/')
@@ -63,7 +64,7 @@ const DevelopmentPage: React.FC = () => {
       setCodeOutput(generatedCode)
       message.success('代码生成完成')
     } catch (error: any) {
-      console.error('Failed to generate code:', error)
+      logger.error('Failed to generate code', { appId, error: error.message })
       message.error('代码生成失败')
       setCodeOutput('代码生成失败，请重试。')
     } finally {

@@ -29,7 +29,7 @@ class App {
         app.updatedAt
       ], function(err) {
         if (err) {
-          if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+          if (err.code === 'SQLITE_CONSTRAINT' && /UNIQUE constraint failed: apps\.name/.test(err.message)) {
             return reject(new Error('应用名称已存在'))
           }
           return reject(err)
@@ -110,7 +110,7 @@ class App {
         id
       ], function(err) {
         if (err) {
-          if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+          if (err.code === 'SQLITE_CONSTRAINT' && /UNIQUE constraint failed: apps\.name/.test(err.message)) {
             return reject(new Error('应用名称已存在'))
           }
           return reject(err)

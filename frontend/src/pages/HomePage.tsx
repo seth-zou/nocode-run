@@ -4,6 +4,7 @@ import { PlusOutlined, DeleteOutlined, AppstoreOutlined } from '@ant-design/icon
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '../store/appStore'
 import { appApi } from '../services/api'
+import logger from '../services/logger'
 
 const { Title, Paragraph } = Typography
 const { TextArea } = Input
@@ -24,7 +25,7 @@ const HomePage: React.FC = () => {
       const appsData = await appApi.getApps()
       setApps(appsData)
     } catch (error) {
-      console.error('Failed to load apps:', error)
+      logger.error('Failed to load apps', { error: (error as Error).message })
       setError('加载应用列表失败')
       message.error('加载应用列表失败')
     } finally {
@@ -40,7 +41,7 @@ const HomePage: React.FC = () => {
       setIsModalVisible(false)
       form.resetFields()
     } catch (error) {
-      console.error('Failed to create app:', error)
+      logger.error('Failed to create app', { error: (error as Error).message })
       message.error('应用创建失败')
     }
   }
@@ -51,7 +52,7 @@ const HomePage: React.FC = () => {
       deleteApp(id)
       message.success('应用删除成功')
     } catch (error) {
-      console.error('Failed to delete app:', error)
+      logger.error('Failed to delete app', { id, error: (error as Error).message })
       message.error('应用删除失败')
     }
   }
